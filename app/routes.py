@@ -1,10 +1,10 @@
 """ This module contains signup and login routes """
 from flask import (
-    Flask, render_template, flash, redirect, url_for, session
+    Flask, render_template, flash, redirect, url_for, session, request
 )
-from .models import db
+from models import db
 from .forms import LoginForm, SignupForm
-from .models import User, Product
+from models import User, Commodity
 
 app = Flask(__name__)
 
@@ -12,8 +12,28 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     """Home page"""
-    products = Product.query.all()
-    return render_template("home.html", products=products)
+    product_searched = request.args.get('search')
+    category_selected = request.args.get('category')
+
+    products_query = Commodity.query
+
+    if product_searched:
+        products_query = products_query.filter(
+            Commodity.name.ilike(f'%{product_searched}%'))
+
+    if category_selected:
+        products_query = products_query.filter(
+            Commodity.category == category_selected)
+
+    products = products_query.all()
+
+    categories = db.session.query(Commodity.category).distinct().all()
+    # get the category from the tuple
+    categories = [c[0] for c in categories]
+    return render_template("home.html",
+                           products=products,
+                           categories=categories,
+                           category_selected=category_selected)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -42,13 +62,14 @@ def signup():
     form = SignupForm()
     if form.validate_on_submit():
         # check for already existing username
-        username_exists = User.query.filter_by(username=form.username.data)
+        username_exists = User.query.filter_by(
+            username=form.username.data).first()
         if username_exists is not None:
             flash("Username already taken")
             return render_template('signup.html', form=form)
 
         # check for already existing email
-        email_exists = User.query.filter_by(email=form.email.data)
+        email_exists = User.query.filter_by(email=form.email.data).first()
         if email_exists is not None:
             flash("Email already registered")
             return render_template('signup.html', form=form)
@@ -68,7 +89,7 @@ def signup():
 @app.route('/product/<int:id>')
 def product(id):
     """ Get more info about a product """
-    product = Product.query.get_or_404(id)
+    product = Commodity.query.get_or_404(id)
     return render_template("product.html", product=product)
 
 
@@ -91,6 +112,6 @@ def see_cart():
     # view all items in cart
         return render_template('cart.html', products=[])
 
-    products = Product.query.filter(Product.id.in_(cart)).all()
+    products = Commodity.query.filter(Commodity.id.in_(cart)).all()
 
     return render_template('cart.html', products=products)
