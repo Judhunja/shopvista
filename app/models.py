@@ -1,14 +1,24 @@
+#!/usr/bin/python3
 """ This module contains a class User """
 
-from flask_sqlalchemy import SQLAlchemy
 import bcrypt
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
+import secrets
+from flask_migrate import Migrate
 
-db = SQLAlchemy()
+app = Flask(__name__)
+sec_key = secrets.token_urlsafe(16)
+app.secret_key = sec_key
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://shopper:shopvistashopper@localhost/shopvista'
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 class User(db.Model):
     """db table model for class user"""
-
+    __tablename__ = "user"
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
@@ -26,17 +36,18 @@ class User(db.Model):
 
 class Commodity(db.Model):
     """db table model for items for sale"""
-
+    __tablename__ = "commodity"
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(500))
     price = db.Column(db.Float, nullable=False)
     image_url = db.Column(db.String(200))
+    category = db.Column(db.String(100), nullable=False)
 
 
 class Orders(db.Model):
     """ db table model for items ordered """
-
+    __tablename__ = "orders"
     id = db.Column(db.Integer(), primary_key=True)
     # link the id to the user id
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
@@ -45,10 +56,13 @@ class Orders(db.Model):
     amount = db.Column(db.Integer(), nullable=False)
     date = db.Column(db.DateTime(), nullable=False)
 
+    # relationship for accessing all orders made by a user
+    # lazy loading of user orders only when a user is selected ot loaded
+    user = db.relationship('User', backref=db.backref('orders', lazy=True))
+    # relationship for accessing all orders for a particular commodity
+    commodity = db.relationship(
+        'Commodity', backref=db.backref('orders', lazy=True))
 
-# relationship for accessing all orders made by a user
-# lazy loading of user orders only when a user is selected ot loaded
-user = db.relationship('User', backref=db.backref('orders', lazy=True))
-# relationship for accessing all orders for a particular commodity
-commodity = db.relationship(
-    'Commodity', backref=db.backref('orders', lazy=True))
+
+if __name__ == "__main__":
+    app.run()
