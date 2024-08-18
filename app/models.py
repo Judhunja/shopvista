@@ -3,17 +3,9 @@
 
 import bcrypt
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-import secrets
-from flask_migrate import Migrate
+import app
 
-app = Flask(__name__)
-sec_key = secrets.token_urlsafe(16)
-app.secret_key = sec_key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://shopper:shopvistashopper@localhost/shopvista'
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+db = SQLAlchemy()
 
 
 class User(db.Model):

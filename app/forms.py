@@ -1,18 +1,7 @@
 """ This module contains a class LoginForm """
-from flask import Flask
-from flask_bootstrap import Bootstrap5
-
-from flask_wtf import FlaskForm, CSRFProtect
+from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Length
-import secrets
-
-app = Flask(__name__)
-sec_key = secrets.token_urlsafe(16)
-app.secret_key = sec_key
-
-bootstrap = Bootstrap5(app)
-csrf = CSRFProtect(app)
 
 
 class LoginForm(FlaskForm):
