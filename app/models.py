@@ -12,7 +12,7 @@ class User(db.Model):
     """db table model for class user"""
     __tablename__ = "user"
     id = db.Column(db.Integer(), primary_key=True)
-    # username = db.Column(db.String(255), unique=True, nullable=False)
+    username = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
 
@@ -23,7 +23,7 @@ class User(db.Model):
 
     def validate_password(self, pwd):
         """Check if pwd is valid"""
-        return bcrypt.checkpw(pwd.encode("utf-8"), self.hashed_password)
+        return bcrypt.checkpw(pwd.encode("utf-8"), self.hashed_password.encode())
 
 
 class Commodity(db.Model):

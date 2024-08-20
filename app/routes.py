@@ -40,17 +40,18 @@ def register_routes(app):
         form = LoginForm()
         if form.validate_on_submit():
             # get first user in db
-            user = User.query.filter_by(user_email=form.email.data).first()
+            user = User.query.filter_by(email=form.email.data).first()
             if user is not None and user.validate_password(form.password.data):
+                session['user_id'] = user.id
                 flash(f"{form.email.data} logged in successfully!")
                 return redirect(url_for("home"))
             elif (
                 user is not None and
                 not user.validate_password(form.password.data)
             ):
-                flash("Invalid password")
+                flash("Invalid password!")
             else:
-                flash("Invalid username")
+                flash("Invalid email!")
         return render_template("login.html", form=form)
 
     @app.route("/signup", methods=["GET", "POST"])
@@ -59,34 +60,40 @@ def register_routes(app):
         form = SignupForm()
         if form.validate_on_submit():
             # check for already existing username
-            """email_exists = User.query.filter_by(
-                email=form.email.data).first()
-            if email_exists is not None:
+            username_exists = User.query.filter_by(
+                username=form.email.data).first()
+            if username_exists is not None:
                 flash("Username already taken")
-                return render_template('signup.html', form=form)"""
+                return render_template('signup.html', form=form)
 
             # check for already existing email
             email_exists = User.query.filter_by(email=form.email.data).first()
             if email_exists is not None:
-                flash("Email already registered")
+                flash("Email already registered!")
                 return render_template('signup.html', form=form)
 
+            # confirm user password
+            if form.password.data != form.confirm_password.data:
+                flash("Passwords do not match! Enter correct password")
+                return render_template('signup.html', form=form)
             # if email and username are new, create a new User
-            user = User(email=form.email.data)
+            user = User(username=form.username.data, email=form.email.data)
             user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
             flash("Signed up successfully!")
 
-            # redirect to login page for user to log in
-            return redirect(url_for("login"))
+            # automatically login the user after signup
+            return redirect(url_for("home"))
         return render_template("signup.html", form=form)
 
     @app.route('/product/<int:id>')
     def product(id):
         """ Get more info about a product """
         product = Commodity.query.get_or_404(id)
-        return render_template("product.html", product=product)
+        # check if user is logged in
+        user_id = session.get('user_id')
+        return render_template("product.html", product=product, user_id=user_id)
 
     @app.route('/cart/<int:product_id>')
     def cart(product_id):
@@ -109,3 +116,10 @@ def register_routes(app):
         products = Commodity.query.filter(Commodity.id.in_(cart)).all()
 
         return render_template('cart.html', products=products)
+
+    @app.route("/logout")
+    def logout():
+        """Route for logging out a user"""
+        session.pop('user_id', None)
+        flash("You have logged out!")
+        return redirect(url_for("home"))
