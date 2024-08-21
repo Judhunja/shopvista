@@ -1,0 +1,91 @@
+body {
+	background-color: #f0f2f5;
+	font-family: 'Poppins', sans-serif;
+	color: #333;
+	padding-top: 50px;
+	margin: 0;
+}
+
+h1 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #1a237e;
+	text-align: center;
+	margin-bottom: 30px;
+	letter-spacing: 1.5px;
+}
+
+/* Checkout item */
+.list-group-item {
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	padding: 15px;
+	background-color: #ffffff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+}
+
+.list-group-item img {
+	border-radius: 5px;
+	margin-right: 15px;
+}
+
+.list-group-item h5,
+.list-group-item p {
+	margin-bottom: 0;
+	font-size: 1rem;
+	color: #616161;
+}
+
+/* Total price */
+h3 {
+	font-size: 1.5rem;
+	color: #1a237e;
+	font-weight: 600;
+	margin-top: 20px;
+	text-align: center;
+}
+
+/* Button */
+.btn-success {
+	background-color: #43a047;
+	border: none;
+	border-radius: 20px;
+	padding: 10px 20px;
+	font-weight: 600;
+	transition: background-color 0.3s ease;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.btn-success:hover {
+	background-color: #388e3c;
+}
+
+.btn-secondary {
+	background-color: #6c757d;
+	border: none;
+	border-radius: 20px;
+	padding: 10px 20px;
+	font-weight: 600;
+	width: 100%;
+}
+
+.btn-secondary:hover {
+	background-color: #5a6268;
+}
+
+form {
+	text-align: center;
+}
+
+.container {
+	max-width: 600px;
+	margin: 0 auto;
+	background-color: #ffffff;
+	border-radius: 20px;
+	padding: 30px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

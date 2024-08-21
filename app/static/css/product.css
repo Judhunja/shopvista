@@ -15,7 +15,6 @@ h1 {
 	letter-spacing: 1.5px;
 }
 
-/* Product image */
 .img-fluid {
 	border-radius: 20px;
 	max-height: 400px;
@@ -25,7 +24,7 @@ h1 {
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Product description */
+/* image desc */
 p {
 	font-size: 1.1rem;
 	color: #616161;
@@ -41,14 +40,20 @@ p strong {
 }
 
 /* Buttons */
-.btn-success {
-	background-color: #43a047;
+.btn-success,
+.btn-primary,
+.btn-secondary {
+	color: #ffffff !important;
 	border: none;
 	border-radius: 20px;
 	padding: 10px 20px;
 	transition: background-color 0.3s ease;
 	font-weight: 600;
 	margin-right: 10px;
+}
+
+.btn-success {
+	background-color: #43a047;
 }
 
 .btn-success:hover {
@@ -57,12 +62,6 @@ p strong {
 
 .btn-primary {
 	background-color: #3949ab;
-	border: none;
-	border-radius: 20px;
-	padding: 10px 20px;
-	transition: background-color 0.3s ease;
-	font-weight: 600;
-	margin-right: 10px;
 }
 
 .btn-primary:hover {
@@ -71,18 +70,12 @@ p strong {
 
 .btn-secondary {
 	background-color: #6c757d;
-	border: none;
-	border-radius: 20px;
-	padding: 10px 20px;
-	transition: background-color 0.3s ease;
-	font-weight: 600;
 }
 
 .btn-secondary:hover {
 	background-color: #5a6268;
 }
 
-/* Container(whole page`) */
 .container {
 	max-width: 800px;
 	margin: 0 auto;
