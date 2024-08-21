@@ -24,3 +24,8 @@ class SignupForm(FlaskForm):
     confirm_password = PasswordField('Enter your password', validators=[
         DataRequired(), Length(7, 40)])
     submit = SubmitField('Submit')
+
+
+class CheckoutForm(FlaskForm):
+    """ Form for setting csrf for purchase(No field) """
+    pass

@@ -3,7 +3,7 @@ from flask import (
     render_template, flash, redirect, url_for, session, request
 )
 from .models import db
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, SignupForm, CheckoutForm
 from .models import User, Commodity, Orders
 from datetime import datetime
 
@@ -130,6 +130,7 @@ def register_routes(app):
     @app.route('/checkout', methods=['GET', 'POST'])
     def checkout():
         """ Checkout after confirming products in cart """
+        form = CheckoutForm()
         user_id = session.get('user_id')
         cart = session.get('cart', [])
 
@@ -140,18 +141,20 @@ def register_routes(app):
         products = Commodity.query.filter(Commodity.id.in_(cart)).all()
         total_price = sum([product.price for product in products])
 
-        for product_id in cart:
-            order = Orders(user_id=user_id, commodity_id=product_id,
-                           amount=1, date=datetime.utcnow())
-            db.session.add(order)
-        db.session.commit()
+        if form.validate_on_submit():
+            for product_id in cart:
+                order = Orders(user_id=user_id, commodity_id=product_id,
+                               amount=1, date=datetime.utcnow())
+                db.session.add(order)
+            db.session.commit()
 
-        if request.method == 'POST':
             session.pop('cart',  None)
-            flash('Your order has been placed!')
-            return redirect(url_for('home'))
+            return render_template('congrats.html')
 
-        return render_template('checkout.html', products=products, total_price=total_price)
+        return render_template('checkout.html',
+                               products=products,
+                               total_price=total_price,
+                               form=form)
 
     @ app.route("/logout")
     def logout():

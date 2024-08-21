@@ -21,6 +21,7 @@
 		</ul>
 
 		<form method="POST" action="{{ url_for('checkout') }}">
+			{{ form.hidden_tag() }}
 			<button type="submit" class="btn btn-success mt-3">Complete Purchase</button>
 			<a href="{{ url_for('see_cart') }}" class="btn btn-secondary mt-3">Back to Cart</a>
 		</form>
