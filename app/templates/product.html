@@ -16,6 +16,7 @@
 		<p>Stock Available: {{ product.stock }}</p>
 		{% if session.get('user_id') %}
 		<a href="{{ url_for('cart', product_id=product.id) }}" class="btn btn-success">Add to Cart</a>
+		<a href="{{ url_for('see_cart') }}" class="btn btn-primary">Go to Cart</a>
 		<a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Shopping</a>
 		{% else %}
 		<p>You need to <a href="{{ url_for('login', next=url_for('product', id=product.id)) }}">login</a> or <a

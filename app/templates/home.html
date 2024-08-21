@@ -20,10 +20,17 @@
 		</form>
 
 		<!-- signup and login buttons -->
+		{% if session.get('user_id') %}
 		<div class="d-flex justify-content-end">
-			<a href="{{ url_for('signup') }}" class="btn btn-primary me-2">Sign Up</a>
-			<a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+			<a href="{{ url_for('see_cart') }}" class="btn btn-primary me-2">Cart</a>
+			<a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
 		</div>
+		{% else %}
+		<div class="d-flex justify-content-end">
+			<a href="{{ url_for('login') }}" class="btn btn-primary me-2">Login</a>
+			<a href="{{ url_for('signup') }}" class="btn btn-secondary">Signup</a>
+		</div>
+		{% endif %}
 
 		<!-- Categories -->
 		<div class="mb-4">

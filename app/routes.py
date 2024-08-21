@@ -112,7 +112,7 @@ def register_routes(app):
         cart.append(product_id)
         # store cart item as signed cookies
         session['cart'] = cart
-        return redirect(url_for('see_cart'))
+        return redirect(url_for('product', id=product_id))
 
     @app.route('/see_cart', methods=['GET', 'POST'])
     def see_cart():
