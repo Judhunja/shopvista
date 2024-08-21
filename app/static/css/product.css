@@ -1,0 +1,106 @@
+body {
+	background-color: #f0f2f5;
+	font-family: 'Poppins', sans-serif;
+	color: #333;
+	padding-top: 20px;
+	margin: 0;
+}
+
+h1 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #1a237e;
+	text-align: center;
+	margin-bottom: 20px;
+	letter-spacing: 1.5px;
+}
+
+/* Product image */
+.img-fluid {
+	border-radius: 20px;
+	max-height: 400px;
+	object-fit: cover;
+	display: block;
+	margin: 20px auto;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Product description */
+p {
+	font-size: 1.1rem;
+	color: #616161;
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+/* Price */
+p strong {
+	color: #1a237e;
+	font-weight: 600;
+	font-size: 1.2rem;
+}
+
+/* Buttons */
+.btn-success {
+	background-color: #43a047;
+	border: none;
+	border-radius: 20px;
+	padding: 10px 20px;
+	transition: background-color 0.3s ease;
+	font-weight: 600;
+	margin-right: 10px;
+}
+
+.btn-success:hover {
+	background-color: #388e3c;
+}
+
+.btn-primary {
+	background-color: #3949ab;
+	border: none;
+	border-radius: 20px;
+	padding: 10px 20px;
+	transition: background-color 0.3s ease;
+	font-weight: 600;
+	margin-right: 10px;
+}
+
+.btn-primary:hover {
+	background-color: #283593;
+}
+
+.btn-secondary {
+	background-color: #6c757d;
+	border: none;
+	border-radius: 20px;
+	padding: 10px 20px;
+	transition: background-color 0.3s ease;
+	font-weight: 600;
+}
+
+.btn-secondary:hover {
+	background-color: #5a6268;
+}
+
+/* Container(whole page`) */
+.container {
+	max-width: 800px;
+	margin: 0 auto;
+	background-color: #ffffff;
+	border-radius: 20px;
+	padding: 30px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	text-align: center;
+}
+
+/* Login and signup links */
+.container a {
+	color: #3949ab;
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.container a:hover {
+	color: #283593;
+	text-decoration: underline;
+}
