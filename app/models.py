@@ -1,9 +1,7 @@
-#!/usr/bin/python3
 """ This module contains a class User """
 
 import bcrypt
 from flask_sqlalchemy import SQLAlchemy
-import app
 
 db = SQLAlchemy()
 
@@ -54,7 +52,3 @@ class Orders(db.Model):
     # relationship for accessing all orders for a particular commodity
     commodity = db.relationship(
         'Commodity', backref=db.backref('orders', lazy=True))
-
-
-if __name__ == "__main__":
-    app.run()

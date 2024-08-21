@@ -13,11 +13,13 @@
 		<img src="{{ product.image_url }}" alt="{{ product.name }}" class="img-fluid">
 		<p>{{ product.description }}</p>
 		<p>Price: ${{ product.price }}</p>
-
+		<p>Stock Available: {{ product.stock }}</p>
 		{% if session.get('user_id') %}
 		<a href="{{ url_for('cart', product_id=product.id) }}" class="btn btn-success">Add to Cart</a>
+		<a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Shopping</a>
 		{% else %}
-		<p>You need to <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('signup') }}">sign
+		<p>You need to <a href="{{ url_for('login', next=url_for('product', id=product.id)) }}">login</a> or <a
+				href="{{ url_for('signup', next=url_for('product', id=product.id)) }}">sign
 				up</a> to place an order.</p>
 		{% endif %}
 	</div>

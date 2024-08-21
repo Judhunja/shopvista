@@ -4,7 +4,8 @@ from flask import (
 )
 from .models import db
 from .forms import LoginForm, SignupForm
-from .models import User, Commodity
+from .models import User, Commodity, Orders
+from datetime import datetime
 
 
 def register_routes(app):
@@ -38,13 +39,17 @@ def register_routes(app):
     def login():
         """Route for logging in a user"""
         form = LoginForm()
+        next_page = request.args.get('next')
         if form.validate_on_submit():
             # get first user in db
             user = User.query.filter_by(email=form.email.data).first()
             if user is not None and user.validate_password(form.password.data):
                 session['user_id'] = user.id
                 flash(f"{form.email.data} logged in successfully!")
-                return redirect(url_for("home"))
+                if next_page:
+                    return redirect(next_page)
+                else:
+                    return redirect(url_for("home"))
             elif (
                 user is not None and
                 not user.validate_password(form.password.data)
@@ -58,6 +63,7 @@ def register_routes(app):
     def signup():
         """Route for signing up a user"""
         form = SignupForm()
+        next_page = request.args.get('next')
         if form.validate_on_submit():
             # check for already existing username
             username_exists = User.query.filter_by(
@@ -84,10 +90,14 @@ def register_routes(app):
             flash("Signed up successfully!")
 
             # automatically login the user after signup
-            return redirect(url_for("home"))
+            session['user_id'] = user.id
+            if next_page:
+                return redirect(next_page)
+            else:
+                return redirect(url_for("home"))
         return render_template("signup.html", form=form)
 
-    @app.route('/product/<int:id>')
+    @app.route('/product/<int:id>', methods=['GET', 'POST'])
     def product(id):
         """ Get more info about a product """
         product = Commodity.query.get_or_404(id)
@@ -95,7 +105,7 @@ def register_routes(app):
         user_id = session.get('user_id')
         return render_template("product.html", product=product, user_id=user_id)
 
-    @app.route('/cart/<int:product_id>')
+    @app.route('/cart/<int:product_id>', methods=['GET', 'POST'])
     def cart(product_id):
         """ Add product user want to cart """
         cart = session.get('cart', [])
@@ -104,7 +114,7 @@ def register_routes(app):
         session['cart'] = cart
         return redirect(url_for('see_cart'))
 
-    @app.route('/see_cart')
+    @app.route('/see_cart', methods=['GET', 'POST'])
     def see_cart():
         """ User view what is in their cart """
         cart = session.get('cart', [])
@@ -117,7 +127,33 @@ def register_routes(app):
 
         return render_template('cart.html', products=products)
 
-    @app.route("/logout")
+    @app.route('/checkout', methods=['GET', 'POST'])
+    def checkout():
+        """ Checkout after confirming products in cart """
+        user_id = session.get('user_id')
+        cart = session.get('cart', [])
+
+        if not cart:
+            flash('Your cart is empty')
+            return redirect(url_for('see_cart'))
+
+        products = Commodity.query.filter(Commodity.id.in_(cart)).all()
+        total_price = sum([product.price for product in products])
+
+        for product_id in cart:
+            order = Orders(user_id=user_id, commodity_id=product_id,
+                           amount=1, date=datetime.utcnow())
+            db.session.add(order)
+        db.session.commit()
+
+        if request.method == 'POST':
+            session.pop('cart',  None)
+            flash('Your order has been placed!')
+            return redirect(url_for('home'))
+
+        return render_template('checkout.html', products=products, total_price=total_price)
+
+    @ app.route("/logout")
     def logout():
         """Route for logging out a user"""
         session.pop('user_id', None)
