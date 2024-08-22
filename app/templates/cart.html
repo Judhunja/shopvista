@@ -21,6 +21,11 @@
 					<p>Price: ${{ product.price }}</p>
 				</div>
 				<a href="{{ url_for('product', id=product.id) }}" class="btn btn-info">More Details</a>
+				<form method="POST" action="{{ url_for('remove_from_cart', product_id=product.id) }}"
+					style="margin-left: 20px;">
+					{{ form.hidden_tag() }}
+					<button type="submit" class="btn btn-danger btn-sm">Remove</button>
+				</form>
 			</li>
 			{% endfor %}
 		</ul>

@@ -3,7 +3,7 @@ from flask import (
     render_template, flash, redirect, url_for, session, request
 )
 from .models import db
-from .forms import LoginForm, SignupForm, CheckoutForm
+from .forms import LoginForm, SignupForm, CheckoutForm, CartForm
 from .models import User, Commodity, Orders
 from datetime import datetime
 
@@ -114,9 +114,22 @@ def register_routes(app):
         session['cart'] = cart
         return redirect(url_for('product', id=product_id))
 
+    @app.route('/remove_from_cart/<int:product_id>', methods=['POST'])
+    def remove_from_cart(product_id):
+        """ Remove product from cart """
+        form = CartForm()
+        if form.validate_on_submit():
+            cart = session.get('cart', [])
+            if product_id in cart:
+                cart.remove(product_id)
+                session['cart'] = cart
+                flash("Removed item from cart!")
+        return redirect(url_for('see_cart'))
+
     @app.route('/see_cart', methods=['GET', 'POST'])
     def see_cart():
         """ User view what is in their cart """
+        form = CartForm()
         cart = session.get('cart', [])
         if not cart:
             flash('You have no items in your cart')
@@ -125,7 +138,7 @@ def register_routes(app):
 
         products = Commodity.query.filter(Commodity.id.in_(cart)).all()
 
-        return render_template('cart.html', products=products)
+        return render_template('cart.html', products=products, form=form)
 
     @app.route('/checkout', methods=['GET', 'POST'])
     def checkout():

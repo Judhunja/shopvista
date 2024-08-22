@@ -29,3 +29,8 @@ class SignupForm(FlaskForm):
 class CheckoutForm(FlaskForm):
     """ Form for setting csrf for purchase(No field) """
     pass
+
+
+class CartForm(FlaskForm):
+    """ Form to enable safe removal of item from cart """
+    pass
