@@ -21,7 +21,7 @@ class SignupForm(FlaskForm):
                            DataRequired(), Length(2, 40)])
     password = PasswordField('Enter your password', validators=[
         DataRequired(), Length(7, 40)])
-    confirm_password = PasswordField('Enter your password', validators=[
+    confirm_password = PasswordField('Confirm password', validators=[
         DataRequired(), Length(7, 40)])
     submit = SubmitField('Submit')
 

@@ -10,6 +10,15 @@
 </head>
 
 <body>
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	<div class="alert alert-warning" role="alert">
+		{% for message in messages %}
+		{{ message }}
+		{% endfor %}
+	</div>
+	{% endif %}
+	{% endwith %}
 	<div class="container text-center">
 		<h1 class="mt-5">Congratulations!</h1>
 		<p class="lead">Your purchase was successful. You will be redirected to the home page shortly.</p>

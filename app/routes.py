@@ -45,7 +45,7 @@ def register_routes(app):
             user = User.query.filter_by(email=form.email.data).first()
             if user is not None and user.validate_password(form.password.data):
                 session['user_id'] = user.id
-                flash(f"{form.email.data} logged in successfully!")
+                flash(f"{user.username} logged in successfully!")
                 if next_page:
                     return redirect(next_page)
                 else:
@@ -56,7 +56,7 @@ def register_routes(app):
             ):
                 flash("Invalid password!")
             else:
-                flash("Invalid email!")
+                flash("User does not exist! Please sign up")
         return render_template("login.html", form=form)
 
     @app.route("/signup", methods=["GET", "POST"])

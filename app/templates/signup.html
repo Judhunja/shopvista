@@ -11,8 +11,21 @@
 <body>
 	<div class="container">
 		<h1>Sign Up!</h1>
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<div class="alert alert-warning" role="alert">
+			{% for message in messages %}
+			{{ message }}
+			{% endfor %}
+		</div>
+		{% endif %}
+		{% endwith %}
 		<form method="POST">
 			{{ form.hidden_tag() }}
+			<div class="mb-3">
+				{{ form.username.label }}
+				{{ form.username(class_='form-control') }}
+			</div>
 			<div class="mb-3">
 				{{ form.email.label }}
 				{{ form.email(class_='form-control') }}
@@ -24,10 +37,6 @@
 			<div class="mb-3">
 				{{ form.confirm_password.label }}
 				{{ form.confirm_password(class_='form-control') }}
-			</div>
-			<div class="mb-3">
-				{{ form.username.label }}
-				{{ form.username(class_='form-control') }}
 			</div>
 			<div class="mb-3">
 				{{ form.submit(class_='btn btn-primary') }}
