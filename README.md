@@ -15,48 +15,49 @@ ShopVista is a Flask-based e-commerce application that allows users to browse pr
 
    - Python 3.x
    - Flask
-    - MySQL
-    - Stripe API Key
+   - MySQL
+   - Stripe API Key
 
 ### Setup
 
    #### Clone the Repository:
 
-`git clone https://github.com/yourusername/shopvista.git`
-`cd shopvista`
+      git clone https://github.com/yourusername/shopvista.git
+
+      cd shopvista
 
 ##### Create a Virtual Environment:
 
-`python3 -m venv venv`
-`source venv/bin/activate`
+      python3 -m venv venv
+      source venv/bin/activate
 
 ##### Install Dependencies:
 
-`pip install -r requirements.txt`
+      pip install -r requirements.txt
 
 #### Configure Environment Variables:
 
 Create a .env file in the root directory and add the following:
 
-``FLASK_APP=run.py
-FLASK_ENV=development
-SECRET_KEY=your_secret_key
-SQLALCHEMY_DATABASE_URI=mysql+pymysql://username:password@localhost/shopvista
-STRIPE_SECRET_KEY=your_stripe_secret_key``
+      FLASK_APP=run.py
+      FLASK_ENV=development
+      SECRET_KEY=your_secret_key
+      SQLALCHEMY_DATABASE_URI=mysql+pymysql://username:password@localhost/shopvista
+      STRIPE_SECRET_KEY=your_stripe_secret_key``
 
 #### Initialize the Database:
 
 
-`flask db init`
-`flask db migrate`
-`flask db upgrade`
+      flask db init
+      flask db migrate
+      flask db upgrade
 
 ##### Populate the Database:
 
 Run the populate_commodities.py script to add initial data:
 
 
-`python test_data/populate_commodities.py `
+      python test_data/populate_commodities.py
 
 #### Run the Application:
 
